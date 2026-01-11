@@ -52,7 +52,7 @@
                     <p class="text-gray-700 leading-relaxed">{{ selectedApp.fullDescription }}</p>
                 </div>
 
-                <a :href="selectedApp.downloadUrl" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all text-center">
+                <a :href="selectedApp.url" target="_blank" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all text-center">
                     Play Now
                 </a>
             </div>
@@ -66,7 +66,6 @@
                 return {
                     email: 'hirokuyo@gmail.com',
                     selectedApp: null,
-                    // In a real scenario, you'd list your app folder names here
                     appFolders: ['susclicker', 'placeholder'], 
                     apps: []
                 }
@@ -76,7 +75,6 @@
             },
             methods: {
                 async loadApps() {
-                    // This fetches the metadata.json for each folder listed in appFolders
                     for (const folder of this.appFolders) {
                         try {
                             const response = await fetch(`apps/${folder}/metadata.json`);
