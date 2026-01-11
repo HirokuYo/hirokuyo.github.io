@@ -1,9 +1,0 @@
-{
-  "id": "app-one",
-  "name": "My Cool App",
-  "version": "1.0.2",
-  "description": "This is a brief description of what the app does.",
-  "fullDescription": "A much longer explanation of the features, permissions, and update logs.",
-  "icon": "apps/app-one/icon.png",
-  "downloadUrl": "apps/app-one/app-one.apk"
-}

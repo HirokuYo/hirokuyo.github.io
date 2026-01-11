@@ -1,0 +1,9 @@
+{
+  "id": "susclicker",
+  "name": "SUS Clicker",
+  "version": "0.1.2",
+  "description": "An entertaining Among Us clicker.",
+  "fullDescription": "The most entertaining Among Us clicker yet! Get the most points and set a new record while purchasing boosts that will get you to the top.",
+  "icon": "apps/susclicker/icon.png",
+  "downloadUrl": "apps/susclicker/susclicker-0.1.2.apk"
+}
