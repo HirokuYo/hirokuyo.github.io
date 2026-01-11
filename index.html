@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HirokuYo App Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        body { background-color: #f3f4f6; color: #1f2937; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen p-4 md:p-8">
+        <header class="max-w-6xl mx-auto mb-10 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">HirokuYo <span class="text-blue-600">Apps</span></h1>
+                <p class="text-gray-500">Official Android Repository</p>
+            </div>
+            <a :href="'mailto:' + email" class="text-sm font-medium hover:underline">{{ email }}</a>
+        </header>
+
+        <main v-if="!selectedApp" class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div v-for="app in apps" :key="app.id" class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col">
+                <div class="flex items-center mb-4">
+                    <img :src="app.icon" :alt="app.name" class="w-16 h-16 rounded-2xl shadow-inner mr-4">
+                    <div>
+                        <h2 class="font-bold text-xl">{{ app.name }}</h2>
+                        <span class="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-1 rounded-full">v{{ app.version }}</span>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm mb-6 flex-grow">{{ app.description }}</p>
+                <button @click="selectedApp = app" class="w-full bg-gray-900 text-white py-3 rounded-2xl font-semibold hover:bg-gray-800 transition-colors">
+                    See More
+                </button>
+            </div>
+        </main>
+
+        <div v-else class="max-w-2xl mx-auto bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100 relative">
+            <button @click="selectedApp = null" class="absolute top-6 right-6 text-gray-400 hover:text-black">
+                ✕ Close
+            </button>
+            
+            <div class="flex flex-col items-center text-center">
+                <img :src="selectedApp.icon" class="w-32 h-32 rounded-[2rem] shadow-lg mb-4">
+                <h2 class="text-3xl font-extrabold">{{ selectedApp.name }}</h2>
+                <p class="text-blue-600 font-medium mb-6">Version {{ selectedApp.version }}</p>
+                
+                <div class="w-full text-left bg-gray-50 p-6 rounded-2xl mb-8">
+                    <h3 class="text-sm uppercase font-bold text-gray-400 mb-2">About this app</h3>
+                    <p class="text-gray-700 leading-relaxed">{{ selectedApp.fullDescription }}</p>
+                </div>
+
+                <a :href="selectedApp.downloadUrl" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all text-center">
+                    Download APK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    email: 'hirokuyo@gmail.com',
+                    selectedApp: null,
+                    // In a real scenario, you'd list your app folder names here
+                    appFolders: ['app-one', 'app-two'], 
+                    apps: []
+                }
+            },
+            mounted() {
+                this.loadApps();
+            },
+            methods: {
+                async loadApps() {
+                    // This fetches the metadata.json for each folder listed in appFolders
+                    for (const folder of this.appFolders) {
+                        try {
+                            const response = await fetch(`apps/${folder}/metadata.json`);
+                            const data = await response.json();
+                            this.apps.push(data);
+                        } catch (e) {
+                            console.error("Could not load app:", folder);
+                        }
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
